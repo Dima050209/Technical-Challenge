@@ -1,11 +1,11 @@
-import "./CarouselCard.scss";
+import "./MovieCard.scss";
 
 interface CarouselCardProps {
   title: string;
   image: string;
 }
 
-export const CarouselCard = ({ title, image }: CarouselCardProps) => {
+export const MovieCard = ({ title, image }: CarouselCardProps) => {
   return (
     <div className="carousel-card">
       <div className="carousel-card-image">

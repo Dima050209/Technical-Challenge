@@ -3,21 +3,64 @@ import { Carousel } from "../../components/Carousel";
 import { Container } from "../../components/Container";
 import { Header } from "../../components/Header";
 import { getMoviesByGenre } from "../../api/movies";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Movie } from "../../types/movie";
+import { MovieCard } from "../../components/MovieCard";
 
 export default function HomePage() {
-  // useEffect(() => {
-  //   const fet = () => {
-  //     getMoviesByGenre(12);
-  //   }
-  //   fet()
-  // }, [])
+  const [moviesByGenre, setMoviesByGenre] = useState<Record<string, Movie[]>>(
+    {}
+  );
+
+  useEffect(() => {
+    async function fetchMovies() {
+      const comedy = (await getMoviesByGenre("35")).results;
+      const action = (await getMoviesByGenre("28")).results;
+      const drama = (await getMoviesByGenre("18")).results;
+
+      console.log(comedy);
+      setMoviesByGenre({
+        comedy,
+        action,
+        drama,
+      });
+    }
+
+    fetchMovies();
+  }, []);
+  
   return (
     <div>
       <Header />
       <main>
         <Container className="home-page__container">
-          <Carousel />
+          <Carousel>
+            {moviesByGenre["comedy"]?.map((movie) => (
+              <MovieCard
+                key={movie.id}
+                title={movie.title}
+                image={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+              />
+            ))}
+          </Carousel>
+          <Carousel>
+            {moviesByGenre["action"]?.map((movie) => (
+              <MovieCard
+                key={movie.id}
+                title={movie.title}
+                image={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+              />
+            ))}
+          </Carousel>
+          <Carousel>
+            {moviesByGenre["drama"]?.map((movie) => (
+              <MovieCard
+                key={movie.id}
+                title={movie.title}
+                image={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+              />
+            ))}
+          </Carousel>
         </Container>
       </main>
     </div>

@@ -3,7 +3,7 @@ const baseUrl =
     ? "http://localhost:5173"
     : "";
 
-export async function getMoviesByGenre(genreId: number) {
+export async function getMoviesByGenre(genreId: number | string) {
   const res = await fetch(`/api/movies?genre=${genreId}`);
   if (!res.ok) throw new Error(`Failed to fetch movies: ${res.status}`);
   

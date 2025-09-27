@@ -1,34 +1,21 @@
 import "./Carousel.scss";
-import { useEffect, useState } from "react";
-import { getMoviesByGenre } from "../../api/movies";
-import { Movie } from "../../types/movie";
-import { CarouselCard } from "../CarouselCard";
+import { Children, ReactNode, useState } from "react";
 
 interface CarouselProps {
   visibleCount?: number; // how many items to show at once
+  itemWidth?: number;
+  itemWidthUnits?: "px" | "rem";
+  children: ReactNode;
 }
 
-export const Carousel = ({ visibleCount = 7 }: CarouselProps) => {
-  const [movies, setMovies] = useState<Movie[]>([]);
+export const Carousel = ({ visibleCount = 7, itemWidth=200, itemWidthUnits = "px", children }: CarouselProps) => {
   const [offset, setOffset] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
-  const itemWidth = 200;
-  const maxOffset = Math.max(0, movies.length - visibleCount);
+  const totalItems = Children.count(children);
+  const maxOffset = Math.max(0, totalItems - visibleCount);
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const data = await getMoviesByGenre(12);
-        setMovies(data.results || []);
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      }
-    };
-
-    fetchMovies();
-  }, []);
 
   const handlePrev = () => {
     setOffset((prev) => Math.max(prev - 1, 0));
@@ -63,7 +50,7 @@ export const Carousel = ({ visibleCount = 7 }: CarouselProps) => {
     <div
       className="carousel"
       style={{
-        width: `${visibleCount * itemWidth}px`,
+        width: `${visibleCount * itemWidth}${itemWidthUnits}`,
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -75,13 +62,11 @@ export const Carousel = ({ visibleCount = 7 }: CarouselProps) => {
           className="carousel-track"
           style={{
             display: "flex",
-            transform: `translateX(-${offset * itemWidth}px)`,
+            transform: `translateX(-${offset * itemWidth}${itemWidthUnits})`,
             transition: "transform 0.3s ease",
           }}
         >
-          {movies.map((movie) => (
-            <CarouselCard key={movie.id} title={movie.title} image={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}/>
-          ))}
+          {children}
         </div>
       </div>
 
