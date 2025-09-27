@@ -1,4 +1,4 @@
-.carousel-card {
+.movie-card {
   min-width: 200px;
   border-radius: 12px;
   overflow: hidden;
@@ -13,7 +13,7 @@
     transform: scale(1.05);
   }
 
-  .carousel-card-image {
+  .movie-card-image {
     width: 100%;
     height: 300px;
     overflow: hidden;
@@ -27,7 +27,7 @@
     }
   }
 
-  .carousel-card-title {
+  .movie-card-title {
     margin: 0.5rem;
     text-align: center;
     font-size: 1rem;

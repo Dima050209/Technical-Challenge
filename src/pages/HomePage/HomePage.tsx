@@ -28,39 +28,24 @@ export default function HomePage() {
 
     fetchMovies();
   }, []);
-  
+
   return (
     <div>
       <Header />
       <main>
         <Container className="home-page__container">
-          <Carousel>
-            {moviesByGenre["comedy"]?.map((movie) => (
-              <MovieCard
-                key={movie.id}
-                title={movie.title}
-                image={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-              />
-            ))}
-          </Carousel>
-          <Carousel>
-            {moviesByGenre["action"]?.map((movie) => (
-              <MovieCard
-                key={movie.id}
-                title={movie.title}
-                image={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-              />
-            ))}
-          </Carousel>
-          <Carousel>
-            {moviesByGenre["drama"]?.map((movie) => (
-              <MovieCard
-                key={movie.id}
-                title={movie.title}
-                image={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-              />
-            ))}
-          </Carousel>
+          {Object.entries(moviesByGenre).map((category) => (
+            <Carousel key={category[0]}>
+              {category[1].map((movie) => (
+                <MovieCard
+                  key={movie.id}
+                  movieId={movie.id}
+                  title={movie.title}
+                  image={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                />
+              ))}
+            </Carousel>
+          ))}
         </Container>
       </main>
     </div>
