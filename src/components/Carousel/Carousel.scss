@@ -1,0 +1,46 @@
+.carousel {
+  position: relative;
+
+  .carousel-window {
+    overflow: hidden;
+    width: 100%;
+
+    .carousel-track {
+      display: flex;
+      gap: 10px;
+
+      .carousel-item {
+      }
+    }
+  }
+  .carousel-button {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    width: 4rem;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 2;
+
+    &:hover:not(:disabled) {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+
+  .carousel-button.prev {
+    left: 0;
+  }
+
+  .carousel-button.next {
+    right: 0;
+  }
+}

@@ -1,0 +1,36 @@
+.carousel-card {
+  min-width: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .carousel-card-image {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+  }
+
+  .carousel-card-title {
+    margin: 0.5rem;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}

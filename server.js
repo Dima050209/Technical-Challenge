@@ -1,5 +1,8 @@
+import 'dotenv/config'
 import fs from 'node:fs/promises'
 import express from 'express'
+
+const api_token = process.env.API_READ_ACCESS_TOKEN;
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production'
@@ -31,6 +34,35 @@ if (!isProduction) {
   app.use(compression())
   app.use(base, sirv('./dist/client', { extensions: [] }))
 }
+
+// Create endpoints to fetch movies data on server, not exposing api key to client
+app.get('/api/movies', async (req, res) => {
+  try {
+    const genreId = req.query.genre;
+
+    let url = 'https://api.themoviedb.org/3/discover/movie';
+
+    if (genreId) {
+      url += `?with_genres=${genreId}`;
+    }
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
+        'accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      return res.status(response.status).json({ error: 'Failed to fetch from TMDB' });
+    }
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 
 // Serve HTML
 app.use('*all', async (req, res) => {
