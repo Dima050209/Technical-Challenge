@@ -1,5 +1,5 @@
 import "./Carousel.scss";
-import { Children, ReactNode, useState } from "react";
+import { Children, memo, ReactNode, useState } from "react";
 
 interface CarouselProps {
   visibleCount?: number; // how many items to show at once
@@ -8,7 +8,7 @@ interface CarouselProps {
   children: ReactNode;
 }
 
-export const Carousel = ({ visibleCount = 7, itemWidth=200, itemWidthUnits = "px", children }: CarouselProps) => {
+const CarouselComponent = ({ visibleCount = 7, itemWidth=200, itemWidthUnits = "px", children }: CarouselProps) => {
   const [offset, setOffset] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -96,3 +96,5 @@ export const Carousel = ({ visibleCount = 7, itemWidth=200, itemWidthUnits = "px
     </div>
   );
 };
+
+export const Carousel = memo(CarouselComponent);

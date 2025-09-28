@@ -63,11 +63,70 @@ app.get('/api/movies', async (req, res) => {
   }
 });
 
+app.get('/api/movie/:movieId', async (req, res) => {
+  try {
+    const { movieId } = req.params;
+
+    if (!movieId) {
+      return res.status(400).json({ error: 'Movie ID is required' });
+    }
+
+    const url = `https://api.themoviedb.org/3/movie/${movieId}`;
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
+        'accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      return res.status(response.status).json({ error: 'Failed to fetch from TMDB' });
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.get('/api/movie/:movieId/images', async (req, res) => {
+  try {
+    const { movieId } = req.params;
+
+    if (!movieId) {
+      return res.status(400).json({ error: 'Movie ID is required' });
+    }
+
+    const url = `https://api.themoviedb.org/3/movie/${movieId}/images`;
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
+        accept: 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      return res.status(response.status).json({ error: 'Failed to fetch images from TMDB' });
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 // Serve HTML
 app.use('*all', async (req, res) => {
   try {
-    const url = req.originalUrl.replace(base, '')
+    // Adding '/' to the beginning of the url for react-router to p rocess normally
+    let url = req.originalUrl.replace(base, '');
+    if (!url.startsWith('/')) url = '/' + url;
 
     /** @type {string} */
     let template

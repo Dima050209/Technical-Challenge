@@ -18,7 +18,6 @@ export default function HomePage() {
       const action = (await getMoviesByGenre("28")).results;
       const drama = (await getMoviesByGenre("18")).results;
 
-      console.log(comedy);
       setMoviesByGenre({
         comedy,
         action,
