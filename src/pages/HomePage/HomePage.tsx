@@ -6,11 +6,14 @@ import { getMoviesByGenre } from "../../api/movies";
 import { useEffect, useState } from "react";
 import { Movie } from "../../types/movie";
 import { MovieCard } from "../../components/MovieCard";
+import Favlist from "../../components/Favlist/Favlist";
+import { useResponsiveVisibleCount } from "../../utils/hooks";
 
 export default function HomePage() {
   const [moviesByGenre, setMoviesByGenre] = useState<Record<string, Movie[]>>(
     {}
   );
+  const visibleCount = useResponsiveVisibleCount();
 
   useEffect(() => {
     async function fetchMovies() {
@@ -18,35 +21,35 @@ export default function HomePage() {
       const action = (await getMoviesByGenre("28")).results;
       const drama = (await getMoviesByGenre("18")).results;
 
-      setMoviesByGenre({
-        comedy,
-        action,
-        drama,
-      });
+      setMoviesByGenre({ comedy, action, drama });
     }
 
     fetchMovies();
   }, []);
 
   return (
-    <div>
+    <>
       <Header />
       <main>
         <Container className="home-page__container">
-          {Object.entries(moviesByGenre).map((category) => (
-            <Carousel key={category[0]}>
-              {category[1].map((movie) => (
-                <MovieCard
-                  key={movie.id}
-                  movieId={movie.id}
-                  title={movie.title}
-                  image={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                />
-              ))}
-            </Carousel>
+          {Object.entries(moviesByGenre).map(([genre, movies]) => (
+            <section key={genre}>
+              <h3 className="section-heading">Top in {genre}</h3>
+              <Carousel visibleCount={visibleCount}>
+                {movies.map((movie) => (
+                  <MovieCard
+                    key={movie.id}
+                    movieId={movie.id}
+                    title={movie.title}
+                    image={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                  />
+                ))}
+              </Carousel>
+            </section>
           ))}
+          <Favlist />
         </Container>
       </main>
-    </div>
+    </>
   );
 }

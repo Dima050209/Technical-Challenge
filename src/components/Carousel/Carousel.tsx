@@ -4,11 +4,12 @@ import { Children, memo, ReactNode, useState } from "react";
 interface CarouselProps {
   visibleCount?: number; // how many items to show at once
   itemWidth?: number;
+  itemsGap?: number;
   itemWidthUnits?: "px" | "rem";
   children: ReactNode;
 }
 
-const CarouselComponent = ({ visibleCount = 7, itemWidth=200, itemWidthUnits = "px", children }: CarouselProps) => {
+const CarouselComponent = ({ visibleCount = 7, itemWidth=200, itemsGap=10, itemWidthUnits = "px", children }: CarouselProps) => {
   const [offset, setOffset] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -50,7 +51,7 @@ const CarouselComponent = ({ visibleCount = 7, itemWidth=200, itemWidthUnits = "
     <div
       className="carousel"
       style={{
-        width: `${visibleCount * itemWidth}${itemWidthUnits}`,
+        width: `${visibleCount * (itemWidth + itemsGap) - itemsGap}${itemWidthUnits}`,
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -62,7 +63,8 @@ const CarouselComponent = ({ visibleCount = 7, itemWidth=200, itemWidthUnits = "
           className="carousel-track"
           style={{
             display: "flex",
-            transform: `translateX(-${offset * itemWidth}${itemWidthUnits})`,
+            gap: `${itemsGap}${itemWidthUnits}`,
+            transform: `translateX(-${offset * (itemWidth + itemsGap)}${itemWidthUnits})`,
             transition: "transform 0.3s ease",
           }}
         >

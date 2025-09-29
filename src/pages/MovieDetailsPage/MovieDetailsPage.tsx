@@ -2,15 +2,31 @@ import { Header } from "../../components/Header";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getMovieById, getMovieImages } from "../../api/movies";
-import { Movie } from "../../types/movie";
+import { MovieDetails } from "../../types/movie";
 import { format, parseISO } from "date-fns";
 
 import "./MovieDetailsPage.scss";
 import { Container } from "../../components/Container";
+import { FavlistBtn } from "../../components/FavlistBtn";
+
+const genreStyles: Record<string, { color: string; fontFamily: string }> = {
+  Action: {
+    color: "#43ced8ff",
+    fontFamily: "Impact, sans-serif",
+  },
+  Comedy: {
+    color: "#ff9800",
+    fontFamily: "'Comic Neue', cursive, sans-serif",
+  },
+  Drama: {
+    color: "#6a1b9a",
+    fontFamily: "'Merriweather', serif",
+  },
+};
 
 export const MovieDetailsPage = () => {
   const { movieId } = useParams<{ movieId: string }>();
-  const [movie, setMovie] = useState<Movie | null>(null);
+  const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [images, setImages] = useState<string[]>([]);
 
   useEffect(() => {
@@ -18,13 +34,16 @@ export const MovieDetailsPage = () => {
 
     const fetchMovieData = async () => {
       try {
-        const movieData = await getMovieById(Number(movieId));
+        const movieData: MovieDetails = await getMovieById(Number(movieId));
         setMovie(movieData);
 
         const imageData = await getMovieImages(Number(movieId));
         const topImages = (imageData.backdrops || [])
           .slice(0, 3)
-          .map((img: any) => `https://image.tmdb.org/t/p/w500${img.file_path}`);
+          .map(
+            (img: { file_path: string }) =>
+              `https://image.tmdb.org/t/p/w500${img.file_path}`
+          );
         setImages(topImages);
       } catch (err) {
         console.error(err);
@@ -45,6 +64,11 @@ export const MovieDetailsPage = () => {
     );
   }
 
+  const matchedGenre = movie.genres.find((g) => genreStyles[g.name]);
+  const appliedStyle = matchedGenre
+    ? genreStyles[matchedGenre.name]
+    : undefined;
+
   return (
     <>
       <Header />
@@ -55,33 +79,56 @@ export const MovieDetailsPage = () => {
               <img
                 className="main-poster"
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.title + " main poster"}
+                alt={`${movie.title} main poster`}
               />
-              <img
-                className="sub-poster"
-                src={images[0]}
-                alt={movie.title + " image 1"}
-              />
-              <img
-                className="sub-two-poster"
-                src={images[1]}
-                alt={movie.title + " image 2"}
-              />
-              <img
-                className="sub-two-poster"
-                src={images[2]}
-                alt={movie.title + " image 3"}
-              />
+              {images[0] && (
+                <img
+                  className="sub-poster"
+                  src={images[0]}
+                  alt={`${movie.title} image 1`}
+                />
+              )}
+              {images[1] && (
+                <img
+                  className="sub-two-poster"
+                  src={images[1]}
+                  alt={`${movie.title} image 2`}
+                />
+              )}
+              {images[2] && (
+                <img
+                  className="sub-two-poster"
+                  src={images[2]}
+                  alt={`${movie.title} image 3`}
+                />
+              )}
             </div>
 
             <aside className="details-widget">
-              <button className="favourite-btn">❤️ Save to favourites</button>
-              <p className="overview">{movie.overview}</p>
+              <FavlistBtn
+              movieId={movie.id}
+                style={{
+                  border: `2px solid ${appliedStyle?.color}`,
+                  fontFamily: appliedStyle?.fontFamily || "inherit",
+                }}
+              />
+
+              <p
+                className="overview"
+                style={{
+                  fontFamily: appliedStyle?.fontFamily || "inherit",
+                }}
+              >
+                {movie.overview}
+              </p>
             </aside>
           </div>
 
-          <section className="extra-info">
-            <h2>{movie?.title}</h2>
+          <section
+            className="extra-info"
+            style={{ borderTop: `2px solid ${appliedStyle?.color}` || "#fff" }}
+          >
+            <h2>{movie.title}</h2>
             <p>
               Release date:{" "}
               <strong>
@@ -95,6 +142,9 @@ export const MovieDetailsPage = () => {
               {movie.vote_count} votes)
             </p>
             <p>Language: {movie.original_language.toUpperCase()}</p>
+            <p>Genres: {movie.genres.map((g) => g.name).join(", ")}</p>
+            <p>Status: {movie.status}</p>
+            <p>Runtime: {movie.runtime} minutes</p>
           </section>
         </Container>
       </main>

@@ -14,14 +14,14 @@ header {
     }
 
     .creator-label {
-        .creator-link {
-            text-decoration: underline;
+      .creator-link {
+        text-decoration: underline;
 
-            &:hover {
-                color: rgb(230, 47, 230);
-                transition: color 0.2s ease-in-out;
-            }
+        &:hover {
+          color: rgb(230, 47, 230);
+          transition: color 0.2s ease-in-out;
         }
+      }
     }
 
     .home-link {
@@ -31,6 +31,34 @@ header {
       &:hover {
         color: rgb(230, 47, 230);
         transition: color 0.2s ease-in-out;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .header-container {
+      gap: 2rem;
+
+      .home-link {
+        font-size: 1rem;
+      }
+
+      .creator-label {
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .header-container {
+      gap: 1rem;
+
+      .home-link {
+        font-size: 0.875rem;
+      }
+
+      .creator-label {
+        font-size: 0.8rem;
       }
     }
   }
