@@ -51,7 +51,5 @@ To start it you need to create a .env file where you need to set your api token:
 - Pretty much universal component, you can pass different kind of cards in here, just specify their width and gap between them
 - You can also set number of visible elements
 
----
 
-## Project Structure
 
