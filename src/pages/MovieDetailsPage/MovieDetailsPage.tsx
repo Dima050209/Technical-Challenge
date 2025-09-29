@@ -1,8 +1,8 @@
 import { Header } from "../../components/Header";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getMovieById, getMovieImages } from "../../api/movies";
-import { MovieDetails } from "../../types/movie";
+import { getMovieById, getMovieImages } from "../../utils/api/movies";
+import { MovieDetails } from "../../utils/types/movie";
 import { format, parseISO } from "date-fns";
 
 import "./MovieDetailsPage.scss";

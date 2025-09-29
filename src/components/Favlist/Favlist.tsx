@@ -1,8 +1,8 @@
 import "./Favlist.scss";
 import { useEffect, useState, useMemo } from "react";
-import { Movie } from "../../types/movie";
+import { Movie } from "../../utils/types/movie";
 import { getFavlist } from "../../utils/favlist-storage";
-import { getMovieById } from "../../api/movies";
+import { getMovieById } from "../../utils/api/movies";
 import { MovieCard } from "../MovieCard";
 import { Carousel } from "../Carousel";
 import { useResponsiveVisibleCount } from "../../utils/hooks";
