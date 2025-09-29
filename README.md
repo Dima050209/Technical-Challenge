@@ -8,22 +8,26 @@ A web application to browse films by categories, view detailed information, and 
 
 To start the project, follow these steps:
 
-1. **Clone the project** to your computer:
+1) **Clone the project** to your computer:
 
 ```bash
-git clone <repository_url>
-cd <project_folder>
+git clone https://github.com/Dima050209/Technical-Challenge.git
+cd Technical-Challenge
 ```
-
-2) Create a .env file at the root folder of the project where you need to set your api token: 
+2) **Open the project in VS Code or any other editor**
+(for VS Code)
+```bash
+code .
+```
+3) **Create a .env file** at the root folder of the project where you need to set your api token: 
 ```bash
 API_READ_ACCESS_TOKEN='<your_token>'
 ```
-3) run 
+4) run 
 ```bash 
 npm install
 ```
-4) run 
+5) run 
 ```bash 
 npm run dev
 ```
