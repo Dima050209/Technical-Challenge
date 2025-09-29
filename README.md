@@ -4,10 +4,29 @@ A web application to browse films by categories, view detailed information, and 
 
 ---
 
-## Starting project
+## Setup
 
-To start it you need to create a .env file where you need to set your api token: API_READ_ACCESS_TOKEN='<your_token>'
+To start the project, follow these steps:
 
+1. **Clone the project** to your computer:
+
+```bash
+git clone <repository_url>
+cd <project_folder>
+```
+
+2) Create a .env file at the root folder of the project where you need to set your api token: 
+```bash
+API_READ_ACCESS_TOKEN='<your_token>'
+```
+3) run 
+```bash 
+npm install
+```
+4) run 
+```bash 
+npm run dev
+```
 ---
 
 ## Tech Stack
