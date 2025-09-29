@@ -12,10 +12,12 @@ To start the project, follow these steps:
 
 ```bash
 git clone https://github.com/Dima050209/Technical-Challenge.git
-cd Technical-Challenge
 ```
 2) **Open the project in VS Code or any other editor**
 (for VS Code)
+```bash
+cd Technical-Challenge
+```
 ```bash
 code .
 ```
